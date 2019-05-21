@@ -12,6 +12,9 @@
         </span>
       </div>
     </div>
+    <div class="cart-item__image">
+      <img :src="require('../../assets/' + cartItem.image_tag)" alt="hoodie">
+    </div>
   </div>
 </template>
 
