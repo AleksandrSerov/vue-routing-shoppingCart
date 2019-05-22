@@ -1,19 +1,22 @@
 <template>
-  <section id="product-item" class="box">
+  <section id="product-item" class="box" v-if="productItem">
     <div class="product-item__details">
       <h1 class="title is-4">
-        <p>{{productItem.title}}</p>
-        <span class="tag product-item__tag">123</span>
+        <p>{{ productItem.title }}</p>
+        <span class="tag product-item__tag">{{ productItem.product_type }}</span>
       </h1>
-      <p class="product-item__description">123</p>
+      <p class="product-item__description">{{ productItem.description }}</p>
       <p class="product-item__created_at">
         Founded:
-        <span class="has-text-weight-bold">123</span>
+        <span class="has-text-weight-bold">{{ productItem.created_at }}</span>
       </p>
-      <button class="button is-primary product-item__button">Add to Cart</button>
+      <button
+        class="button is-primary product-item__button"
+        @click="addAndGoToCart(productItem)"
+      >Add to Cart</button>
     </div>
     <div class="product-item__image">
-      <img src alt>
+      <img :src="require('../../assets/' + productItem.image_tag)">
     </div>
   </section>
 </template>
@@ -25,8 +28,13 @@ export default {
   props: ["id"],
   computed: {
     productItem() {
-      const res = this.$store.getters.productItemFromId(Number(this.id));
-      return res;
+      return this.$store.getters.productItemFromId(Number(this.id));
+    }
+  },
+  methods: {
+    addAndGoToCart(productItem) {
+      this.$store.dispatch("addCartItem", productItem);
+      this.$router.push("/cart");
     }
   }
 };
