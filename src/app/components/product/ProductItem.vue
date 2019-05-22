@@ -1,5 +1,8 @@
 <template>
   <section id="product-item" class="box" v-if="productItem">
+    <span class="return-icon" @click="$router.go(-1)">
+      <i class="fa fa-arrow-left is-primary"></i>
+    </span>
     <div class="product-item__details">
       <h1 class="title is-4">
         <p>{{ productItem.title }}</p>
@@ -33,8 +36,9 @@ export default {
   },
   methods: {
     addAndGoToCart(productItem) {
-      this.$store.dispatch("addCartItem", productItem);
-      this.$router.push("/cart");
+      this.$store.dispatch("addCartItem", productItem).then(() => {
+        this.$router.push("/cart");
+      });
     }
   }
 };
