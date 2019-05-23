@@ -1,21 +1,30 @@
 import axios from "axios";
 
 const state = {
-  token: null
+  token: null,
+  loading: false
 };
 
 const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
+  },
+  LOGIN_PENDING(state) {
+    state.loading = true;
+  },
+  LOGIN_SUCCESS(state) {
+    state.loading = false;
   }
 };
 
 const actions = {
   login({ commit }) {
+    commit("LOGIN_PENDING");
     return axios.post("/api/login").then(response => {
       const { token } = response.data;
       localStorage.setItem("token", token);
       commit("SET_TOKEN", token);
+      commit("LOGIN_SUCCESS");
     });
   },
   logout({ commit }) {
@@ -28,7 +37,8 @@ const actions = {
 };
 
 const getters = {
-  token: state => state.token
+  token: state => state.token,
+  loading: state => state.loading
 };
 
 const loginModule = {
